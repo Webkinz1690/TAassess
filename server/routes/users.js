@@ -5,7 +5,7 @@ jwt = require('jsonwebtoken');
 // ***********************************************//
 // Create a user
 // ***********************************************//
-router.post('/api/users/', async (req, res) => {
+router.post('/users', async (req, res) => {
   const user = new Users(req.body);
   try {
     await user.save();
@@ -25,7 +25,7 @@ router.post('/api/users/', async (req, res) => {
 // ***********************************************//
 // Login a user
 // ***********************************************//
-router.post('/api/users/login', async (req, res) => {
+router.post('/users/login', async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await Users.findByCredentials(email, password);
@@ -47,12 +47,15 @@ module.exports = router;
 // ***********************************************//
 // Get current user
 // ***********************************************//
-router.get('/api/users/me', async (req, res) => res.json(req.user));
+router.get('/users/me', async (req, res) => res.json(req.user));
+
+
+
 
 // ***********************************************//
 // Update a user
 // ***********************************************//
-router.patch('/api/users/me', async (req, res) => {
+router.patch('/users/me', async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ['name', 'email', 'password', 'username'];
   const isValidOperation = updates.every((update) =>
@@ -73,7 +76,7 @@ router.patch('/api/users/me', async (req, res) => {
 // ***********************************************//
 // Logout a user
 // ***********************************************//
-router.post('/api/users/logout', async (req, res) => {
+router.post('/users/logout', async (req, res) => {
     try {
       req.user.tokens = req.user.tokens.filter((token) => {
         return token.token !== req.token;
@@ -89,7 +92,7 @@ router.post('/api/users/logout', async (req, res) => {
   // ***********************************************//
   // Logout all devices
   // ***********************************************//
-  router.post('/api/users/logoutAll', async (req, res) => {
+  router.post('/users/logoutAll', async (req, res) => {
     try {
       req.user.tokens = [];
       await req.user.save();
@@ -103,7 +106,7 @@ router.post('/api/users/logout', async (req, res) => {
   // ***********************************************//
   // Delete a user
   // ***********************************************//
-  router.delete('/api/users/me', async (req, res) => {
+  router.delete('/users/me', async (req, res) => {
     try {
       await req.user.remove();
       res.clearCookie('jwt');

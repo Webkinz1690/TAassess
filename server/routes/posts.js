@@ -8,7 +8,7 @@ const router = require('express').Router(),
 // ***********************************************//
 // Create a post
 // ***********************************************//
-router.post('/api/posts/new', async (req, res) => {
+router.post('/posts/new', async (req, res) => {
   const newPost = await new Posts({
     ...req.body,
     author: req.user._id
@@ -25,7 +25,7 @@ router.post('/api/posts/new', async (req, res) => {
 // Get all posts
 // ***********************************************//
 
-router.get('/api/posts', async (req, res) => {
+router.get('/posts', async (req, res) => {
   await Posts.find()
     .then(post => {
       res.json(post)
@@ -38,7 +38,7 @@ router.get('/api/posts', async (req, res) => {
 // Get all posts for a user 
 // ***********************************************//
 
-router.get('/api/posts/user', async (req, res) => {
+router.get('/posts/user', async (req, res) => {
   await Posts.find({ author: req.user._id }).then(post =>
     res.json(post).catch(error => res.status(400).json(`Error: ${error}`))
   )
@@ -48,7 +48,7 @@ router.get('/api/posts/user', async (req, res) => {
 // Get one post
 // ***********************************************//
 
-router.get('/api/posts/:id', async (req, res) => {
+router.get('/posts/:id', async (req, res) => {
   await Posts.findById(req.params.id)
     .then(post => res.json(post))
     .catch(error => res.status(400).json(`Error: ${error}`))
@@ -57,7 +57,7 @@ router.get('/api/posts/:id', async (req, res) => {
   // ***********************************************//
 // Update a post
 // ***********************************************//
-router.patch('/api/posts/:id', async (req, res) => {
+router.patch('/posts/:id', async (req, res) => {
     const updates = Object.keys(req.body);
     const allowedUpdates = ['title', 'body'];
     const isValidOperation = updates.every((update) =>
@@ -82,7 +82,7 @@ router.patch('/api/posts/:id', async (req, res) => {
   // ***********************************************//
   // Delete a post
   // ***********************************************//
-  router.delete('/api/posts/:id', async (req, res) => {
+  router.delete('/posts/:id', async (req, res) => {
     try {
       const posts = await Posts.findOneAndDelete({
         _id: req.params.id,

@@ -1,16 +1,17 @@
 import React from 'react';
 import { MDBNav, MDBNavItem, MDBNavLink, MDBNavbarBrand } from 'mdbreact';
+import Logout from './Logout'
 
 const Nav = () => {
   return (
     <MDBNav
       style={{ height: '50px' }}
-      color="blue-gradient"
+      color="black"
       className="expand-lg fixed-top justify-content-center align-items-center"
     >
       <MDBNavbarBrand>
         <MDBNavLink className="white-text " to="/">
-          <strong className="white-text h3">WynIt</strong>
+          <strong className="white-text h3">BloggyBlug</strong>
         </MDBNavLink>
       </MDBNavbarBrand>
       <MDBNavItem>
@@ -23,6 +24,7 @@ const Nav = () => {
           Sign Up
         </MDBNavLink>
       </MDBNavItem>
+      <Logout />
     </MDBNav>
   );
 };

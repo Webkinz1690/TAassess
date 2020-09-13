@@ -7,7 +7,7 @@ mongoose = require('mongoose'),
   // ***********************************************//
 // Create a comment
 // ***********************************************//
-router.post('/api/comments/:postId/new', async (req, res) => {
+router.post('/comments/:postId/new', async (req, res) => {
     try {
     const comment = new Comments(req.body)
     const savedComment = await comment.save()
@@ -23,7 +23,7 @@ router.post('/api/comments/:postId/new', async (req, res) => {
  // ***********************************************//
 // Get comments for a post 
 // ***********************************************//
-router.get('/api/:postId/comments', async (req, res) => {
+router.get('/:postId/comments', async (req, res) => {
     try {
       const post = (await Posts.findById(req.params.postId)).populate(
         'comments'
