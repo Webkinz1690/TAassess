@@ -1,7 +1,7 @@
 const router = require('express').Router(),
 mongoose = require('mongoose'),
- Posts = require('../db/models/post');
- Comments = require('../db/models/comment');
+ Post = require('../db/models/post');
+ Comment = require('../db/models/comment');
 
 
   // ***********************************************//
@@ -9,7 +9,7 @@ mongoose = require('mongoose'),
 // ***********************************************//
 router.post('/comments/:postId/new', async (req, res) => {
     try {
-    const comment = new Comments(req.body)
+    const comment = new Comment(req.body)
     const savedComment = await comment.save()
     const post = await Posts.findById(req.params.postId)
     post.comments.push(savedComment._id)
@@ -30,7 +30,7 @@ router.get('/:postId/comments', async (req, res) => {
       )
       const commentIds = post.comments
       const commentPromises = commentIds.map(_id => {
-        return Comments.findOne({ _id })
+        return Comment.findOne({ _id })
       })
       const comments = await Promise.all(commentPromises)
       res.json(comments)

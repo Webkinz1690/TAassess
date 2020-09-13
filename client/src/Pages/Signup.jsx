@@ -26,7 +26,7 @@ const SignUp = ({ history }) => {
     e.preventDefault();
     console.log('Made it');
     try {
-      const response = await axios.post('/users', formData);
+      const response = await axios.post('/user/signup', formData);
       const token = response.data.token;
       localStorage.setItem('token', token);
       setCurrentUser(response.data.user);
@@ -68,16 +68,6 @@ const SignUp = ({ history }) => {
                       error="wrong"
                       success="right"
                       onChange={handleChange}
-                    />
-                    <MDBInput
-                      label="Confirm your email"
-                      icon="exclamation-triangle"
-                      size="sm"
-                      group
-                      type="text"
-                      validate
-                      error="wrong"
-                      success="right"
                     />
                     <MDBInput
                       label="Password"

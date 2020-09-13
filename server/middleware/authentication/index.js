@@ -1,6 +1,6 @@
 const passport = require('passport'),
   JwtStrategy = require('passport-jwt').Strategy,
-  Users = require('../../db/models/user'),
+  User = require('../../db/models/user'),
   ExtractJwt = require('passport-jwt').ExtractJwt;
 
 // ******************************
@@ -20,7 +20,7 @@ passport.use(
       return done(null, false, { message: 'jwt expired' });
     }
     let { iat, exp, ...userData } = jwtPayload;
-    userData = await Users.findById(userData._id);
+    userData = await User.findById(userData._id);
     return done(null, userData);
   })
 );

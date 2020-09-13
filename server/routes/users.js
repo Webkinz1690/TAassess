@@ -1,12 +1,12 @@
 const router = require('express').Router(),
-Users = require('../db/models/user')
+User = require('../db/models/user')
 jwt = require('jsonwebtoken');
 
 // ***********************************************//
 // Create a user
 // ***********************************************//
-router.post('/users', async (req, res) => {
-  const user = new Users(req.body);
+router.post('/user/signup', async (req, res) => {
+  const user = new User(req.body);
   try {
     await user.save();
     const token = await user.generateAuthToken();
@@ -21,14 +21,13 @@ router.post('/users', async (req, res) => {
   }
 });
     
-
 // ***********************************************//
 // Login a user
 // ***********************************************//
-router.post('/users/login', async (req, res) => {
+router.post('/user/login', async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await Users.findByCredentials(email, password);
+    const user = await User.findByCredentials(email, password);
     const token = await user.generateAuthToken();
     res.cookie('jwt', token, {
       httpOnly: true,
@@ -47,7 +46,7 @@ module.exports = router;
 // ***********************************************//
 // Get current user
 // ***********************************************//
-router.get('/users/me', async (req, res) => res.json(req.user));
+router.get('/user/me', async (req, res) => res.json(req.user));
 
 
 
@@ -55,7 +54,7 @@ router.get('/users/me', async (req, res) => res.json(req.user));
 // ***********************************************//
 // Update a user
 // ***********************************************//
-router.patch('/users/me', async (req, res) => {
+router.patch('/user/me', async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ['name', 'email', 'password', 'username'];
   const isValidOperation = updates.every((update) =>
@@ -76,7 +75,7 @@ router.patch('/users/me', async (req, res) => {
 // ***********************************************//
 // Logout a user
 // ***********************************************//
-router.post('/users/logout', async (req, res) => {
+router.post('/user/logout', async (req, res) => {
     try {
       req.user.tokens = req.user.tokens.filter((token) => {
         return token.token !== req.token;
@@ -92,7 +91,7 @@ router.post('/users/logout', async (req, res) => {
   // ***********************************************//
   // Logout all devices
   // ***********************************************//
-  router.post('/users/logoutAll', async (req, res) => {
+  router.post('/user/logoutAll', async (req, res) => {
     try {
       req.user.tokens = [];
       await req.user.save();
@@ -106,7 +105,7 @@ router.post('/users/logout', async (req, res) => {
   // ***********************************************//
   // Delete a user
   // ***********************************************//
-  router.delete('/users/me', async (req, res) => {
+  router.delete('/user/me', async (req, res) => {
     try {
       await req.user.remove();
       res.clearCookie('jwt');
