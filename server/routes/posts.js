@@ -1,6 +1,6 @@
 const router = require('express').Router(),
   mongoose = require('mongoose'),
-  Posts = require('../db/models/post');
+  Post = require('../db/models/post');
 
 
 
@@ -9,7 +9,7 @@ const router = require('express').Router(),
 // Create a post
 // ***********************************************//
 router.post('/posts/new', async (req, res) => {
-  const newPost = await new Posts({
+  const newPost = await new Post({
     ...req.body,
     author: req.user._id
   });
@@ -26,7 +26,7 @@ router.post('/posts/new', async (req, res) => {
 // ***********************************************//
 
 router.get('/posts', async (req, res) => {
-  await Posts.find()
+  await Post.find()
     .then(post => {
       res.json(post)
     })
@@ -39,7 +39,7 @@ router.get('/posts', async (req, res) => {
 // ***********************************************//
 
 router.get('/posts/user', async (req, res) => {
-  await Posts.find({ author: req.user._id }).then(post =>
+  await Post.find({ author: req.user._id }).then(post =>
     res.json(post).catch(error => res.status(400).json(`Error: ${error}`))
   )
 })
@@ -49,7 +49,7 @@ router.get('/posts/user', async (req, res) => {
 // ***********************************************//
 
 router.get('/posts/:id', async (req, res) => {
-  await Posts.findById(req.params.id)
+  await Post.findById(req.params.id)
     .then(post => res.json(post))
     .catch(error => res.status(400).json(`Error: ${error}`))
 })
@@ -84,7 +84,7 @@ router.patch('/posts/:id', async (req, res) => {
   // ***********************************************//
   router.delete('/posts/:id', async (req, res) => {
     try {
-      const posts = await Posts.findOneAndDelete({
+      const posts = await Post.findOneAndDelete({
         _id: req.params.id,
         author: req.user._id
       });
